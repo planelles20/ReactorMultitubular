@@ -1,6 +1,6 @@
 #    blaance de energia para obtner la variacion de la temperatura
 #   con la longitud del reactor
-import kinetic2 as kn
+import kinetic as kn
 import numpy as np
 from scipy import integrate
 
