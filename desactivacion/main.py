@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 
 import representar as rep
 import integrateODE as intODE
-import estudio as std
 
 if __name__ == "__main__":
 
