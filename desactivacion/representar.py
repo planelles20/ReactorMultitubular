@@ -82,3 +82,14 @@ class plotearLong(object):
         plt.title("Temperatura del refrigerante (C)")
 
         plt.show()
+
+    def actividad(self):
+        fig = plt.figure(figsize=plt.figaspect(0.5))
+
+        ax = fig.add_subplot(1, 1, 1, projection='3d')
+        surf = ax.plot_surface(self.X, self.Y,self.SOL[:,:,8],cmap=cm.coolwarm)
+        plt.xlabel("longitud (m)")
+        plt.ylabel("tiempo (horas)")
+        plt.title("actividad")
+
+        plt.show()
