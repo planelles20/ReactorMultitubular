@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     nl = 100
     nt = 20
-    tf = 300 # horas
+    tf = 150 # horas
 
     # que hace?
 
@@ -58,7 +58,11 @@ if __name__ == "__main__":
     rep1.componentes()
     rep1.T_and_P()     #
     rep1.T_and_Ts()
+    rep1.actividad()
     # representar soluciones
+
+    plt.plot(tlong, SOL[:,-1,:5])
+    plt.show()
 
     if(False): #una solucion
         rep1 = rep.plotearVSCat(ycat,xcat)
