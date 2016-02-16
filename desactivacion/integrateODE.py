@@ -19,8 +19,7 @@ class ODE(mec.mecanic):
         self.Dint = Dint
 
         self.l = np.linspace(0,L,n)
-        self.ll = np.linspace(0,L,n-1)
-        self.dl = self.ll[1]-self.ll[0]
+        self.dl = self.l[1]-self.l[0]
 
         # catalizador
         self.ro_l = 1700. #densidad del lecho kg/m3_lecho
@@ -151,6 +150,24 @@ class ODE(mec.mecanic):
 
     def solutionLong2(self):
         return  self.Runge_Kutta(self.funcOdeLong2, self.y0, self.l)
+
+
+    def aaa(self, nj0, T, P, a, dt):
+        '''
+            devuelve un array de variacion de la actividad
+            nj0 es un array de (nx5)
+            T es un array de (nx1)
+            P es un array de (nx1)
+            a es un array de (nx1)
+        '''
+        da = np.zeros((a.size), dtype=float)
+        for i in range(a.size):
+            a1 = 0.036*self.y(nj0[i,:])[0]*P[i]+0.069*self.y(nj0[i,:])[1]*P[i]
+            a2 = 1+2.132*self.y(nj0[i,:])[4]*P[i]
+            a3 = a[i]-0.408/(1+1.975*self.y(nj0[i,:])[1]*P[i])
+            da[i] = -a1/a2*a3
+
+        return a+da*dt
 
 
 

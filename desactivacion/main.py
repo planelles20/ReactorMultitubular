@@ -18,19 +18,18 @@ if __name__ == "__main__":
     adi = False
 
     nl = 100
-    nt = 10
-    tf = 24 # horas
+    nt = 20
+    tf = 300 # horas
 
     # que hace?
 
-
     #Resolver:
     #     n0, T0, Ts, P0      ----->     y = [n0, T0, Ts0, P0]
-    # dnj/dW = f(nj, T, P)                       |dnj/dW|
-    # dT/dW  = h(nj, T, P)    ----->     dy/dW = | dT/dW|
-    #dTs/dW  = i(nj, T, P)                       |dTs/dW|
+    # dnj/dW = f(nj, T, P, a)                    |dnj/dW|
+    # dT/dW  = h(nj, T, P, a) ----->     dy/dW = | dT/dW|
+    #dTs/dW  = i(nj, T, P, a)                    |dTs/dW|
     # dP/dW  = j(nj, T, P)                       | dP/dW|
-
+    # dadt   = k(nj, T, P, a)                    | da/dt|
 
     #solucion para un longitud L y un numero de tubos N
     #catalizador
@@ -40,36 +39,17 @@ if __name__ == "__main__":
         xcat = sol.abcisasMasaCat()
 
     #longitud
-
-    def da(nj0, T, P, a):
-        '''
-            devuelve un array de variacion de la actividad
-            nj0 es un array de (nx5)
-            T es un array de (nx1)
-            P es un array de (nx1)
-            a es un array de (nx1)
-        '''
-        da = np.zeros((a.size), dtype=float)
-        for i in range(a.size):
-            da[i] = -T[i]/2000*(a[i]+0.3)
-
-        return da
-
     SOL = np.zeros((nt,nl,9))
     tlong = np.linspace(0,tf,nt)
     dt = tlong[1]-tlong[0]
     a = np.ones((nl))
     for i in range(nt):
-
         sol = intODE.ODE(n0, T0, Ts0, P0, a, L=L, Dint=Dint, Ntub=N, Adiabatico=adi, n=nl)
         ylong = sol.solutionLong2()
         SOL[i,:,:8] = ylong
         SOL[i,:,8] = a
-
-        #            nj0       T            P            a
-        a += da(SOL[i,:,:5], SOL[i,:,5], SOL[i,:,7], SOL[i,:,8])
-        print(a)
-
+        #                nj0       T            P            a
+        a = sol.aaa(SOL[i,:,:5], SOL[i,:,5], SOL[i,:,7], SOL[i,:,8], dt)
 
     xlong = sol.abcisasLongReactor()
 
