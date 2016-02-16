@@ -41,18 +41,35 @@ if __name__ == "__main__":
 
     #longitud
 
+    def da(nj0, T, P, a):
+        '''
+            devuelve un array de variacion de la actividad
+            nj0 es un array de (nx5)
+            T es un array de (nx1)
+            P es un array de (nx1)
+            a es un array de (nx1)
+        '''
+        da = np.zeros((a.size), dtype=float)
+        for i in range(a.size):
+            da[i] = -T[i]/2000*(a[i]+0.3)
+
+        return da
+
     SOL = np.zeros((nt,nl,9))
     tlong = np.linspace(0,tf,nt)
     dt = tlong[1]-tlong[0]
-    a = 1
+    a = np.ones((nl))
     for i in range(nt):
-        a += -0.02*dt
-        print(a)
-        sol = intODE.ODE(n0, T0, Ts0, P0, a, L=L, Dint=Dint, Ntub=N, Adiabatico=adi, n=nl)
-        ylong = sol.solutionLong()
 
+        sol = intODE.ODE(n0, T0, Ts0, P0, a, L=L, Dint=Dint, Ntub=N, Adiabatico=adi, n=nl)
+        ylong = sol.solutionLong2()
         SOL[i,:,:8] = ylong
         SOL[i,:,8] = a
+
+        #            nj0       T            P            a
+        a += da(SOL[i,:,:5], SOL[i,:,5], SOL[i,:,7], SOL[i,:,8])
+        print(a)
+
 
     xlong = sol.abcisasLongReactor()
 

@@ -7,10 +7,11 @@ import balanceMecanico as mec
 
 class ODE(mec.mecanic):
 
-    def __init__(self, n0, T0, Ts0, P0, a, Dint=0.05, L = 10., Ntub=3000., Adiabatico=False, n = 1000):
+    def __init__(self, n0, T0, Ts0, P0, a, Dint=0.05, L = 10., Ntub=3000., Adiabatico=False, n = 100):
         # condiciones iniciales
         self.y0 = np.hstack((n0,T0,Ts0,P0))
-        self.a = a
+        self.a = a #es un array
+        self.n = n
 
         #diemsiones de los tubos
         self.L = L  #longitud de los tubos
@@ -18,6 +19,8 @@ class ODE(mec.mecanic):
         self.Dint = Dint
 
         self.l = np.linspace(0,L,n)
+        self.ll = np.linspace(0,L,n-1)
+        self.dl = self.ll[1]-self.ll[0]
 
         # catalizador
         self.ro_l = 1700. #densidad del lecho kg/m3_lecho
@@ -55,11 +58,17 @@ class ODE(mec.mecanic):
 
         self.Adiabatico = Adiabatico
 
-    def funcOdeCat(self, y, w):
+        self.www = np.ones((n+1))*5
+        self.i = 0
+
+
+    def funcOdeCat(self, y, x):
         n = y[0:5]
         T = y[5]+273.15
         Ts = y[6]+273.15
         P = y[7]
+
+        # a es un escalar
 
         dnjdw = self.dnjdW(n, T, P, self.a)
         dTdw = self.dTdW(n, T, Ts, P, self.a)
@@ -72,7 +81,7 @@ class ODE(mec.mecanic):
         return  integrate.odeint(self.funcOdeCat, self.y0, self.w)
 
 
-    def funcOdeLong(self, y, w):
+    def funcOdeLong(self, y, x):
         n = y[0:5]
         T = y[5]+273.15
         Ts = y[6]+273.15
@@ -88,10 +97,65 @@ class ODE(mec.mecanic):
     def solutionLong(self):
         return  integrate.odeint(self.funcOdeLong, self.y0, self.l)
 
-
-
     def abcisasMasaCat(self):
         return self.w
 
     def abcisasLongReactor(self):
         return self.l
+
+    def funcOdeCat2(self, y, x, a):
+        n = y[0:5]
+        T = y[5]+273.15
+        Ts = y[6]+273.15
+        P = y[7]
+
+        # a es un escalar
+
+        dnjdw = self.dnjdW(n, T, P, a)
+        dTdw = self.dTdW(n, T, Ts, P, a)
+        dTsdw = self.dTsdW(n, T, Ts, P, a)
+        dPdw = self.dPdW(n, T, P)
+        dydw = np.hstack((dnjdw,dTdw, dTsdw, dPdw))
+        return dydw
+
+
+    def funcOdeLong2(self, y, x, a):
+        n = y[0:5]
+        T = y[5]+273.15
+        Ts = y[6]+273.15
+        P = y[7]
+
+        dnjdL = self.dnjdL(n, T, P, a)
+        dTdL = self.dTdL(n, T, Ts, P, a)
+        dTsdL = self.dTsdL(n, T, Ts, P, a)
+        dPdL = self.dPdL(n, T, P)
+        dydL = np.hstack((dnjdL,dTdL, dTsdL, dPdL))
+        return dydL
+
+    def Runge_Kutta(self, f, y0, x):
+
+        ysol = np.zeros((x.size, y0.size))
+        ysol[0,:] = y0
+        h = x[1]-x[0]
+
+        for i in range(1,self.n):
+            a = self.a[i]
+            k1 = f(ysol[i-1,:]        , x     , a)
+            k2 = f(ysol[i-1,:]+k1*h/2., x+h/2., a)
+            k3 = f(ysol[i-1,:]+k2*h/2., x+h/2., a)
+            k4 = f(ysol[i-1,:]+k3*h   , x+h   , a)
+
+            ysol[i,:] = ysol[i-1,:]+h/6.*(k1+2*k2+2*k3+k4)
+
+        return ysol
+
+    def solutionLong2(self):
+        return  self.Runge_Kutta(self.funcOdeLong2, self.y0, self.l)
+
+
+
+
+
+
+
+        #
