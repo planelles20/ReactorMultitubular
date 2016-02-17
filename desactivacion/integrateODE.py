@@ -46,7 +46,7 @@ class ODE(mec.mecanic):
         self.D = np.array([ 3.81447123e-1,  6.31692001e-1, 151.200, -90.5167, -3.83142257e-4])
         self.E = np.array([    1.39426909,     -37.291909, -507.00,  962.718,     28.9049323])
 
-        self.m_aceite = 5000 #caudal masico de aceite termico kg/h
+        self.m_aceite = 3. #caudal masico de aceite termico kg/h
         self.Aceite = np.array([2.8645834e-10, -5.05316938e-7, 3.29206037e-4, -9.07074183e-2, 10.909833])
 
         # Constantes
@@ -160,7 +160,7 @@ class ODE(mec.mecanic):
             P es un array de (nx1)
             a es un array de (nx1)
         '''
-        da = np.zeros((a.size), dtype=float)
+        da = np.zeros((a.size))
         for i in range(a.size):
             a1 = 0.036*self.y(nj0[i,:])[0]*P[i]+0.069*self.y(nj0[i,:])[1]*P[i]
             a2 = 1+2.132*self.y(nj0[i,:])[4]*P[i]

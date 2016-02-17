@@ -17,8 +17,8 @@ if __name__ == "__main__":
 
     adi = False
 
-    nl = 100
-    nt = 20
+    nl = 1000
+    nt = 50
     tf = 150 # horas
 
     # que hace?
@@ -39,20 +39,45 @@ if __name__ == "__main__":
         xcat = sol.abcisasMasaCat()
 
     #longitud
-    SOL = np.zeros((nt,nl,9))
+    if(True):
+        SOL = np.zeros((nt,nl,9))
+        tlong = np.linspace(0,tf,nt)
+        dt = tlong[1]-tlong[0]
+        a = np.ones((nl))
+        for i in range(nt):
+            sol = intODE.ODE(n0, T0, Ts0, P0, a, L=L, Dint=Dint, Ntub=N, Adiabatico=adi, n=nl)
+            ylong = sol.solutionLong2()
+            SOL[i,:,:8] = ylong
+            SOL[i,:,8] = a
+            #                nj0       T            P            a
+            a = sol.aaa(SOL[i,:,:5], SOL[i,:,5], SOL[i,:,7], SOL[i,:,8], dt)
+
+        xlong = sol.abcisasLongReactor()
+
+        np.savetxt('../data/desactivacionX.dat', xlong, fmt='%.5e')
+        np.savetxt('../data/desactivacion0.dat', SOL[:,:,0], fmt='%.5e')
+        np.savetxt('../data/desactivacion1.dat', SOL[:,:,1], fmt='%.5e')
+        np.savetxt('../data/desactivacion2.dat', SOL[:,:,2], fmt='%.5e')
+        np.savetxt('../data/desactivacion3.dat', SOL[:,:,3], fmt='%.5e')
+        np.savetxt('../data/desactivacion4.dat', SOL[:,:,4], fmt='%.5e')
+        np.savetxt('../data/desactivacion5.dat', SOL[:,:,5], fmt='%.5e')
+        np.savetxt('../data/desactivacion6.dat', SOL[:,:,6], fmt='%.15e')
+        np.savetxt('../data/desactivacion7.dat', SOL[:,:,7], fmt='%.5e')
+        np.savetxt('../data/desactivacion8.dat', SOL[:,:,8], fmt='%.5e')
+
     tlong = np.linspace(0,tf,nt)
-    dt = tlong[1]-tlong[0]
-    a = np.ones((nl))
-    for i in range(nt):
-        sol = intODE.ODE(n0, T0, Ts0, P0, a, L=L, Dint=Dint, Ntub=N, Adiabatico=adi, n=nl)
-        ylong = sol.solutionLong2()
-        SOL[i,:,:8] = ylong
-        SOL[i,:,8] = a
-        #                nj0       T            P            a
-        a = sol.aaa(SOL[i,:,:5], SOL[i,:,5], SOL[i,:,7], SOL[i,:,8], dt)
-
-    xlong = sol.abcisasLongReactor()
-
+    xlong = np.zeros((nl))
+    xlong = np.loadtxt('../data/desactivacionX.dat')
+    SOL = np.zeros((nt,nl,9))
+    SOL[:,:,0] = np.loadtxt('../data/desactivacion0.dat')
+    SOL[:,:,1] = np.loadtxt('../data/desactivacion1.dat')
+    SOL[:,:,2] = np.loadtxt('../data/desactivacion2.dat')
+    SOL[:,:,3] = np.loadtxt('../data/desactivacion3.dat')
+    SOL[:,:,4] = np.loadtxt('../data/desactivacion4.dat')
+    SOL[:,:,5] = np.loadtxt('../data/desactivacion5.dat')
+    SOL[:,:,6] = np.loadtxt('../data/desactivacion6.dat')
+    SOL[:,:,7] = np.loadtxt('../data/desactivacion7.dat')
+    SOL[:,:,8] = np.loadtxt('../data/desactivacion8.dat')
 
     rep1 = rep.plotearLong(SOL,xlong,tlong)
     rep1.componentes()
@@ -64,8 +89,5 @@ if __name__ == "__main__":
     plt.plot(tlong, SOL[:,-1,:5])
     plt.show()
 
-    if(False): #una solucion
-        rep1 = rep.plotearVSCat(ycat,xcat)
-        rep1.componentes() #
-        rep1.T_and_P()     #
-        rep1.T_and_Ts()
+
+    #
