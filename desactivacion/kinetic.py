@@ -3,6 +3,8 @@
 #   en funcion del catalizador que se use
 import numpy as np
 
+import datos
+
 class CuZn:
     '''
     Catalizdor de cobre cinc, los parametros a pasar son:
@@ -17,14 +19,12 @@ class CuZn:
         temperatura (C) = 270
         presion (atm) = 1
     '''
-    def __init__ (self, Ntub=2400, Dint=0.05):
-        self.ro_l = 1700
-        self.Dint = Dint
-        self.N = Ntub
-        self.alpha = np.array([[-1, 1, 0, 0, 1],
-                               [ 0,-1, 1, 0, 2],
-                               [ 0,-1, 0, 1, 1],
-                               [ 0, 0, 1,-1, 1]])
+    def __init__ (self):
+        self.ro_l = datos.ro_l
+        self.Dint = datos.Dint
+        self.N = datos.Ntub
+        self.alpha = datos.alpha
+
     def y(self, n):
         n = np.array(n)
         return n/sum(n)

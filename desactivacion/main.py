@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 import representar as rep
 import integrateODE as intODE
+import datos
 
 if __name__ == "__main__":
 
@@ -11,20 +12,21 @@ if __name__ == "__main__":
     P0 = 2 # atm
     T0 = 270 # C
     Ts0 = 270 # C
-    L = 2.5 #m
-    N = 2400. #numero de tubos inicial
-    Dint = 0.05 # diamtero interno de los tubos (m)
+
+    L = datos.L # metros
+    N = datos.Ntub #numero de tubos inicial
+    Dint = datos.Dint # diamtero interno de los tubos (m)
 
     adi = False
 
-    nl = 1000
-    nt = 50
+    nl = 100 # puntos en la lungitud L
+    nt = 10 #puntos en el tiempo
     tf = 150 # horas
 
     # que hace?
 
     #Resolver:
-    #     n0, T0, Ts, P0      ----->     y = [n0, T0, Ts0, P0]
+    #     n0, T0, Ts, P0      ----->     y = [n0, T0, Ts0, P0, a0]
     # dnj/dW = f(nj, T, P, a)                    |dnj/dW|
     # dT/dW  = h(nj, T, P, a) ----->     dy/dW = | dT/dW|
     #dTs/dW  = i(nj, T, P, a)                    |dTs/dW|
@@ -34,9 +36,12 @@ if __name__ == "__main__":
     #solucion para un longitud L y un numero de tubos N
     #catalizador
     if(False): #una solucion
-        sol = intODE.ODE(n0, T0, Ts0, P0, a, L=L, Dint=Dint, Ntub=N, Adiabatico=adi)
+        sol = intODE.ODE(n0, T0, Ts0, P0, 1, Adiabatico=adi)
         ycat = sol.solutionCat()
         xcat = sol.abcisasMasaCat()
+
+        rep0 = rep.plotearLong(sol,xcat,tlong)
+        rep0.componentes()
 
     #longitud
     if(True):
@@ -45,7 +50,7 @@ if __name__ == "__main__":
         dt = tlong[1]-tlong[0]
         a = np.ones((nl))
         for i in range(nt):
-            sol = intODE.ODE(n0, T0, Ts0, P0, a, L=L, Dint=Dint, Ntub=N, Adiabatico=adi, n=nl)
+            sol = intODE.ODE(n0, T0, Ts0, P0, a, Adiabatico=adi, n=nl)
             ylong = sol.solutionLong2()
             SOL[i,:,:8] = ylong
             SOL[i,:,8] = a
@@ -65,29 +70,28 @@ if __name__ == "__main__":
         np.savetxt('../data/desactivacion7.dat', SOL[:,:,7], fmt='%.5e')
         np.savetxt('../data/desactivacion8.dat', SOL[:,:,8], fmt='%.5e')
 
-    tlong = np.linspace(0,tf,nt)
-    xlong = np.zeros((nl))
-    xlong = np.loadtxt('../data/desactivacionX.dat')
-    SOL = np.zeros((nt,nl,9))
-    SOL[:,:,0] = np.loadtxt('../data/desactivacion0.dat')
-    SOL[:,:,1] = np.loadtxt('../data/desactivacion1.dat')
-    SOL[:,:,2] = np.loadtxt('../data/desactivacion2.dat')
-    SOL[:,:,3] = np.loadtxt('../data/desactivacion3.dat')
-    SOL[:,:,4] = np.loadtxt('../data/desactivacion4.dat')
-    SOL[:,:,5] = np.loadtxt('../data/desactivacion5.dat')
-    SOL[:,:,6] = np.loadtxt('../data/desactivacion6.dat')
-    SOL[:,:,7] = np.loadtxt('../data/desactivacion7.dat')
-    SOL[:,:,8] = np.loadtxt('../data/desactivacion8.dat')
+    if (True):
+        tlong = np.linspace(0,tf,nt)
+        xlong = np.zeros((nl))
+        xlong = np.loadtxt('../data/desactivacionX.dat')
+        SOL = np.zeros((nt,nl,9))
+        SOL[:,:,0] = np.loadtxt('../data/desactivacion0.dat')
+        SOL[:,:,1] = np.loadtxt('../data/desactivacion1.dat')
+        SOL[:,:,2] = np.loadtxt('../data/desactivacion2.dat')
+        SOL[:,:,3] = np.loadtxt('../data/desactivacion3.dat')
+        SOL[:,:,4] = np.loadtxt('../data/desactivacion4.dat')
+        SOL[:,:,5] = np.loadtxt('../data/desactivacion5.dat')
+        SOL[:,:,6] = np.loadtxt('../data/desactivacion6.dat')
+        SOL[:,:,7] = np.loadtxt('../data/desactivacion7.dat')
+        SOL[:,:,8] = np.loadtxt('../data/desactivacion8.dat')
 
-    rep1 = rep.plotearLong(SOL,xlong,tlong)
-    rep1.componentes()
-    rep1.T_and_P()     #
-    rep1.T_and_Ts()
-    rep1.actividad()
-    # representar soluciones
+        rep1 = rep.plotearLong(SOL,xlong,tlong)
+        rep1.componentes()
+        rep1.T_and_P()
+        rep1.T_and_Ts()
+        rep1.actividad()
+        rep1.general_plot(SOL[:,:,1], xlong, tlong, title="ciclohexanona")
 
-    plt.plot(tlong, SOL[:,-1,:5])
-    plt.show()
-
-
-    #
+        # representar soluciones
+        #plt.plot(tlong, SOL[:,-1,:5])
+        #plt.show()

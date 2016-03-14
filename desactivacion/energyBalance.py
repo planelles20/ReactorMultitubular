@@ -4,6 +4,7 @@ import kinetic as kn
 import numpy as np
 from scipy import integrate
 
+import datos
 
 class energia(kn.CuZn):
     '''
@@ -20,36 +21,32 @@ class energia(kn.CuZn):
         temperatura del aceite termico (K) = 300
         presion (atm) = 1.0
     '''
-    def __init__(self, L, Dint=0.05, Adiabatico=False):
+    def __init__(self, Adiabatico=False):
 
-        self.U = 252 #kJ/(m2*h*K)
-        self.N = 10 #numero de tubos
-        self.L = 10 #longitud de los tubos
-        self.ro_l = 2000 #densidad del lecho
-        self.L = L
-        self.Dint = Dint # diametro interno
-        self.ro_l = 1700 #densidad del lecho kg/m3_lecho
-        self.ro_p = 2000 #densidad del catalizador kg/m3_cat
-        self.e = 1-self.ro_l/self.ro_p #porosidad del lecho m3huecos/m3lecho
+        self.U = datos.U #kJ/(m2*h*K)
+        self.N = datos.Ntub #numero de tubos
+        self.L = datos.L #longitud de los tubos
+        self.ro_l = datos.ro_l #densidad del lecho
+        self.L = datos.L
+        self.Dint = datos.Dint # diametro interno
+        self.ro_l = datos.ro_l #densidad del lecho kg/m3_lecho
+        self.ro_p = ratos.ro_p #densidad del catalizador kg/m3_cat
+        self.e =  datos.e #porosidad del lecho m3huecos/m3lecho
         self.Mcat = self.ro_l*self.V_lecho() #masa de catalizados (kg)
-        self.ts = 300+275.15 #temperatura del aceite termico (K)
-        self.t0 = 25+273.15 # temperatura del estado de referencia en K
-        self.alpha = np.array([[-1, 1, 0, 0, 1],
-                               [ 0,-1, 1, 0, 2],
-                               [ 0,-1, 0, 1, 1],
-                               [ 0, 0, 1,-1, 1]])
-        self.DH0 = np.array([-286.2, -226.1, -96.4, -121.9, 0.0]) #entalpia de cada compoenente a la T de referencia
+        self.ts = datos.ts #temperatura del aceite termico (K)
+        self.t0 = datos.t0 # temperatura del estado de referencia en K
+        self.alpha = datos.alpha
+        self.DH0 = datos.DH0 #entalpia de cada compoenente a la T de referencia
 
              # temperatura en K
-             #               Ciclohexanol   Ciclohexanona  Fenol ciclohexenona      H2
-        self.A = np.array([3.11701732e-10,  4.3670771e-11,  43.400,  87.0774, 9.39393940e-12])
-        self.B = np.array([-7.50617201e-7,  6.07692501e-9, 244.500,  258.493, -1.38612795E-8])
-        self.C = np.array([ 3.93429762e-4, -3.43061927e-4, 1152.00,  797.321,  6.70727273e-6])
-        self.D = np.array([ 3.81447123e-1,  6.31692001e-1, 151.200, -90.5167, -3.83142257e-4])
-        self.E = np.array([    1.39426909,     -37.291909, -507.00,  962.718,     28.9049323])
+        self.A = datos.A
+        self.B = datos.B
+        self.C = datos.C
+        self.D = datos.D
+        self.E = datos.E
 
-        self.m_aceite = 500 #caudal masico de aceite termico kg/h
-        self.Aceite = np.array([2.8645834e-10, -5.05316938e-7, 3.29206037e-4, -9.07074183e-2, 10.909833])
+        self.m_aceite = datos.m_aceite #caudal masico de aceite termico kg/h
+        self.Aceite = datos.Aceite
 
         self.Adiabatico = Adiabatico
 
@@ -124,14 +121,15 @@ class energia(kn.CuZn):
         return (self.dQdW(t,ts)-aa)/b
 
     def dTsdW(self, n, t, ts, p, a):
-        return self.dTdW(n, t, ts, p, a)/(self.m_aceite*self.Cpaceite(ts))
+        #return self.dTdW(n, t, ts, p, a)/(self.m_aceite*self.Cpaceite(ts))
+        return 0
 
     def dTdL(self, n, t, ts, p, a):
         return self.ro_l*self.N*np.pi*self.Dint**2./4*self.dTdW(n, t, ts, p, a)
 
     def dTsdL(self, n, t, ts, p, a):
-        return self.ro_l*self.N*np.pi*self.Dint**2./4*self.dTsdW(n, t, ts, p, a)
-
+        #return self.ro_l*self.N*np.pi*self.Dint**2./4*self.dTsdW(n, t, ts, p, a)
+        return 0
 
 
 

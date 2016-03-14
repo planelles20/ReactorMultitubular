@@ -5,21 +5,19 @@ import energyBalance as nrgy
 
 class mecanic(nrgy.energia):
 
-    def __init__(self, L=10., Ntub=3000, Dint = 0.05):
+    def __init__(self):
 
-        #              [OL, ONA, FENOL, CXENONA, H2]
-        self.PM = np.array([100, 98, 94, 96, 2]) # kg/kmol
-        self.R = 8.3144/101325 # kmol/(K*atm)
-        self.N = 2000 #numero de tubos
-        self.Dint =  Dint #diametro interno de los tubos (m)
-        self.L = L #longitud de los tubos (m)
-        self.dp = 3e-3 #diametro medio del Catalizdor (m)
-        self.ro_nu = 1e5/3600 #densidad del gas entre la viscosidad del gas Pa*h
-        self.ro_l = 1700 #densidad del lecho kg/m3_lecho
-        self.ro_p = 2000 #densidad del catalizador kg/m3_cat
-        self.e = 1-self.ro_l/self.ro_p #porosidad del lecho m3huecos/m3lecho
+        self.PM = datos.PM
+        self.R = datos.R # kmol/(K*atm)
+        self.N = datos.Ntub #numero de tubos
+        self.Dint = datos.Dint #diametro interno de los tubos (m)
+        self.L = datos.L #longitud de los tubos (m)
+        self.dp = datos.dp #diametro medio del Catalizdor (m)
+        self.ro_nu = datos.ro_nu #densidad del gas entre la viscosidad del gas Pa*h
+        self.ro_l = datos.ro_l #densidad del lecho kg/m3_lecho
+        self.ro_p = datos.ro_p #densidad del catalizador kg/m3_cat
+        self.e = datos.e #porosidad del lecho m3huecos/m3lecho
         self.Mcat = self.ro_l*self.V_lecho()
-        self.N = Ntub
 
     def V_lecho(self):
         return self.N*self.S(self.Dint)*self.L

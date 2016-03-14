@@ -93,3 +93,14 @@ class plotearLong(object):
         plt.title("actividad")
 
         plt.show()
+
+    def general_plot(self, y, x, t, title=" "):
+        X, Y = np.meshgrid(x, t)
+        fig = plt.figure(figsize=plt.figaspect(0.5))
+        ax = fig.add_subplot(1, 1, 1, projection='3d')
+        surf = ax.plot_surface(X, Y, y,cmap=cm.coolwarm)
+        plt.xlabel("longitud (m)")
+        plt.ylabel("tiempo (horas)")
+        plt.title(title)
+
+        plt.show()
