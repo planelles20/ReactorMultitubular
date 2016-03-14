@@ -1,0 +1,5 @@
+# Python
+*.pyc
+
+#data
+*.dat
