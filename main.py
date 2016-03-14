@@ -21,7 +21,7 @@ if __name__ == "__main__":
     # que hace?
     estudioNtubosVScat = False
     SolucionParaNTubosVScat = False
-    SolucionParaNTubosVSlong = False
+    SolucionParaNTubosVSlong = True
     CargarDatosTubos = False
 
     #Resolver:
