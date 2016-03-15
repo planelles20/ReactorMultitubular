@@ -20,8 +20,8 @@ if __name__ == "__main__":
     adi = False
 
     nl = 100 # puntos en la lungitud L
-    nt = 10 #puntos en el tiempo
-    tf = 150 # horas
+    nt = 8 #puntos en el tiempo
+    tf = 50 # horas
 
     # que hace?
 
@@ -50,6 +50,7 @@ if __name__ == "__main__":
         dt = tlong[1]-tlong[0]
         a = np.ones((nl))
         for i in range(nt):
+            print (nt-i)
             sol = intODE.ODE(n0, T0, Ts0, P0, a, Adiabatico=adi, n=nl)
             ylong = sol.solutionLong2()
             SOL[i,:,:8] = ylong
@@ -58,7 +59,7 @@ if __name__ == "__main__":
             a = sol.aaa(SOL[i,:,:5], SOL[i,:,5], SOL[i,:,7], SOL[i,:,8], dt)
 
         xlong = sol.abcisasLongReactor()
-
+        print (SOL[-1,-1,:])
         np.savetxt('../data/desactivacionX.dat', xlong, fmt='%.5e')
         np.savetxt('../data/desactivacion0.dat', SOL[:,:,0], fmt='%.5e')
         np.savetxt('../data/desactivacion1.dat', SOL[:,:,1], fmt='%.5e')

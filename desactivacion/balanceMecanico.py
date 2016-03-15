@@ -30,6 +30,7 @@ class mecanic(nrgy.energia):
         return p*self.PMm(n)/(self.R*t)
 
     def Qv(self, n, t, p):
+        #el caudal volumetrico es en m3/h
         #ley gases ideales
         return sum(n)*self.R*t/p
 
@@ -37,7 +38,8 @@ class mecanic(nrgy.energia):
         return np.pi*D**2/4
 
     def velocidadGas(self, n, t, p):
-        return self.Qv(n, t, p)/(self.N*self.S(self.D))
+        # la velocidad del gas es en m/h
+        return self.Qv(n, t, p)/(self.N*self.S(self.Dint))
 
     def dPdW(self, n, t, p):
         viscosidad = (1/self.ro_nu)*self.ro(n,t,p)
@@ -46,6 +48,9 @@ class mecanic(nrgy.energia):
 
         c = 1.75*(1-self.e)*self.ro(n,t,p)*(self.Qv(n,t,p)/3600)**2
         d = self.ro_l*(self.S(self.Dint)*self.N)**3*self.e**3*self.dp
+
+        #print (self.velocidadGas(n, t, p)/3600, " m/s")
+
         return -(a/b + c/d)/101325
 
     def dPdL(self, n, t, p):
