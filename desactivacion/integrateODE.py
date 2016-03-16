@@ -30,7 +30,6 @@ class ODE(mec.mecanic):
         self.Mcat = self.ro_l*self.V_lecho()
 
         self.w = np.linspace(0, self.Mcat, n)
-
         # energy
         self.U = datos.U #kJ/(m2*h*K)
         self.ts = datos.ts #temperatura del aceite termico (K)

@@ -12,9 +12,11 @@ ro_l = 1760. #densidad del lecho kg/m3_lecho
 ro_p = 2300. #densidad del catalizador kg/m3_cat
 dp = 3e-3 #diametro medio del Catalizdor (m)
 e = 1-ro_l/ro_p #porosidad del lecho m3huecos/m3lecho
+diff = 0.84e-5 # difusividad del ciclohexanol m2/s
+e_cat = 0.60 # huecos libres dentro del catalizador
 
 # energy
-U = 252 #kJ/(m2*h*K)
+U = 12*5.6745/1000*3600 #kJ/(m2*h*K)
 ts = 300+275.15 #temperatura del aceite termico (K)
 t0 = 25+273.15 # temperatura del estado de referencia en K
 alpha = np.array([[-1, 1, 0, 0, 1],
@@ -29,8 +31,6 @@ C = np.array([ 3.93429762e-4, -3.43061927e-4, 1152.00,  797.321,  6.70727273e-6]
 D = np.array([ 3.81447123e-1,  6.31692001e-1, 151.200, -90.5167, -3.83142257e-4])
 E = np.array([    1.39426909,     -37.291909, -507.00,  962.718,     28.9049323])
 
-
-# Constantes
 #              [OL, ONA, FENOL, CXENONA, H2]
 PM = np.array([100, 98, 94, 96, 2]) # kg/kmol
 R = 8.314472/101325*1000 # m3*atm/(K*kmol)

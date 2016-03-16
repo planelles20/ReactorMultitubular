@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 
+import datos
+import kinetic as kn
+
 
 class plotearLong(object):
     def __init__(self, y, x, t):
@@ -11,6 +14,9 @@ class plotearLong(object):
         xx, tt = np.meshgrid(x, t)
         self.X = xx
         self.Y = tt
+
+        self.nl = len(x)
+        self.nt = len(t)
 
     def componentes(self):
 
@@ -35,10 +41,10 @@ class plotearLong(object):
         plt.title("fenol (kmol/h)")
 
         ax = fig.add_subplot(2, 3, 4, projection='3d')
-        surf = ax.plot_surface(self.X, self.Y, self.SOL[:,:,3],cmap=cm.coolwarm)
+        surf = ax.plot_surface(self.X, self.Y, self.SOL[:,:,3]*1000,cmap=cm.coolwarm)
         plt.xlabel("longitud (m)")
         plt.ylabel("tiempo (horas)")
-        plt.title("ciclohexenona (kmol/h)")
+        plt.title("ciclohexenona (mol/h)")
 
         ax = fig.add_subplot(2, 3, 6, projection='3d')
         surf = ax.plot_surface(self.X, self.Y, self.SOL[:,:,4],cmap=cm.coolwarm)
@@ -94,6 +100,33 @@ class plotearLong(object):
 
         plt.show()
 
+    def moduloThiele(self):
+
+        mL = np.zeros((self.nt,self.nl))
+        rr = kn.CuZn()
+        for i in range(self.nt):
+            for j in range(self.nl):
+                n = self.SOL[i,j,:5]
+                T = self.SOL[i,j,5]
+                P = self.SOL[i,j,7]
+                a = self.SOL[i,j,8]
+                L = datos.Dint/2/2
+                r =  -rr.velocidadReaccion_i(n,T,P,a)[0]/3600 #kmol/(m3s) fata multiplicar por la densidad del cata
+                C_ol = n[0]/((sum(n))*datos.R*T/P) #kmol/m3
+                k = r/C_ol
+                De = datos.diff*datos.e_cat**2 #m2/s
+                mL[i,j] = L*(k/De)**0.5
+                print(mL[i,j])
+
+        fig = plt.figure(figsize=plt.figaspect(0.5))
+        ax = fig.add_subplot(1, 1, 1, projection='3d')
+        surf = ax.plot_surface(self.X, self.Y, mL, cmap=cm.coolwarm)
+        plt.xlabel("longitud (m)")
+        plt.ylabel("tiempo (horas)")
+        plt.title("modulo de Thiele")
+        plt.show()
+
+
     def general_plot(self, y, x, t, title=" "):
         X, Y = np.meshgrid(x, t)
         fig = plt.figure(figsize=plt.figaspect(0.5))
@@ -102,5 +135,4 @@ class plotearLong(object):
         plt.xlabel("longitud (m)")
         plt.ylabel("tiempo (horas)")
         plt.title(title)
-
         plt.show()

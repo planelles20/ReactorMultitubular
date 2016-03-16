@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import representar as rep
 import integrateODE as intODE
 import datos
+import kinetic as kn
 
 if __name__ == "__main__":
 
@@ -44,7 +45,7 @@ if __name__ == "__main__":
         rep0.componentes()
 
     #longitud
-    if(True):
+    if(False):
         SOL = np.zeros((nt,nl,9))
         tlong = np.linspace(0,tf,nt)
         dt = tlong[1]-tlong[0]
@@ -91,7 +92,11 @@ if __name__ == "__main__":
         rep1.T_and_P()
         rep1.T_and_Ts()
         rep1.actividad()
-        rep1.general_plot(SOL[:,:,1], xlong, tlong, title="ciclohexanona")
+        rep1.general_plot(SOL[:,:,0], xlong, tlong, title="ciclohexanol (kmol/h)")
+        rep1.general_plot(SOL[:,:,1], xlong, tlong, title="ciclohexanona (kmol/h)")
+        rep1.general_plot(SOL[:,:,5], xlong, tlong, title="Temperatura (C)")
+        rep1.general_plot(SOL[:,:,7], xlong, tlong, title="Presion (atm)")
+        rep1.moduloThiele()
 
         # representar soluciones
         #plt.plot(tlong, SOL[:,-1,:5])
