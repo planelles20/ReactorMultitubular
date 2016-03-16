@@ -45,9 +45,6 @@ class energia(kn.CuZn):
         self.D = datos.D
         self.E = datos.E
 
-        self.m_aceite = datos.m_aceite #caudal masico de aceite termico kg/h
-        self.Aceite = datos.Aceite
-
         self.Adiabatico = Adiabatico
 
     def V_lecho(self):
@@ -60,8 +57,7 @@ class energia(kn.CuZn):
         if (self.Adiabatico):
             dQdW = 0
         else:
-            dQdW = self.U*(np.pi*self.N*self.L/self.ro_l/self.Mcat)**0.5*(ts-t)
-
+            dQdW = 4*self.U*(ts-t)/(self.ro_p*(1-self.e)*self.Dint)
         return dQdW
 
     def Cp(self, t):
@@ -109,11 +105,7 @@ class energia(kn.CuZn):
         for i in range(4):
             for j in range(5):
                 DHi[i] = self.alpha[i,j]*DHf[j]
-
         return DHi
-
-    def Cpaceite(self, ts):
-        return self.Aceite[0]*(ts)**4+self.Aceite[1]*(ts)**3+self.Aceite[2]*(ts)**2+self.Aceite[3]*(ts)+self.Aceite[4]
 
     def dTdW(self, n, t, ts, p, a):
         aa = np.dot(self.velocidadReaccion_i(n, t, p, a), self.DHi(t))
@@ -121,14 +113,12 @@ class energia(kn.CuZn):
         return (self.dQdW(t,ts)-aa)/b
 
     def dTsdW(self, n, t, ts, p, a):
-        #return self.dTdW(n, t, ts, p, a)/(self.m_aceite*self.Cpaceite(ts))
         return 0
 
     def dTdL(self, n, t, ts, p, a):
         return self.ro_l*self.N*np.pi*self.Dint**2./4*self.dTdW(n, t, ts, p, a)
 
     def dTsdL(self, n, t, ts, p, a):
-        #return self.ro_l*self.N*np.pi*self.Dint**2./4*self.dTsdW(n, t, ts, p, a)
         return 0
 
 

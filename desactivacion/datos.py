@@ -8,9 +8,9 @@ L = 2.5 # metros, longitud de los tubos
 
 
 # catalizador
-ro_l = 1170. #densidad del lecho kg/m3_lecho
-ro_p = 1528. #densidad del catalizador kg/m3_cat
-dp = 1.7e-3 #diametro medio del Catalizdor (m)
+ro_l = 1760. #densidad del lecho kg/m3_lecho
+ro_p = 2300. #densidad del catalizador kg/m3_cat
+dp = 3e-3 #diametro medio del Catalizdor (m)
 e = 1-ro_l/ro_p #porosidad del lecho m3huecos/m3lecho
 
 # energy
@@ -29,8 +29,6 @@ C = np.array([ 3.93429762e-4, -3.43061927e-4, 1152.00,  797.321,  6.70727273e-6]
 D = np.array([ 3.81447123e-1,  6.31692001e-1, 151.200, -90.5167, -3.83142257e-4])
 E = np.array([    1.39426909,     -37.291909, -507.00,  962.718,     28.9049323])
 
-m_aceite = 3000 #caudal masico de aceite termico kg/h
-Aceite = np.array([2.8645834e-10, -5.05316938e-7, 3.29206037e-4, -9.07074183e-2, 10.909833])
 
 # Constantes
 #              [OL, ONA, FENOL, CXENONA, H2]

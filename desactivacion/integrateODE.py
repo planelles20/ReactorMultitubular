@@ -44,8 +44,6 @@ class ODE(mec.mecanic):
         self.D = datos.D
         self.E = datos.E
 
-        self.m_aceite = datos.m_aceite #caudal masico de aceite termico kg/h
-        self.Aceite = datos.Aceite
 
         # Constantes
         #              [OL, ONA, FENOL, CXENONA, H2]
@@ -166,11 +164,3 @@ class ODE(mec.mecanic):
             da[i] = -a1/a2*a3
 
         return a+da*dt
-
-
-
-
-
-
-
-        #
