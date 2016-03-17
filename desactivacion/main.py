@@ -60,7 +60,7 @@ if __name__ == "__main__":
             a = sol.aaa(SOL[i,:,:5], SOL[i,:,5], SOL[i,:,7], SOL[i,:,8], dt)
 
         xlong = sol.abcisasLongReactor()
-        print (SOL[-1,-1,:])
+        #print (SOL[-1,-1,:])
         np.savetxt('../data/desactivacionX.dat', xlong, fmt='%.5e')
         np.savetxt('../data/desactivacion0.dat', SOL[:,:,0], fmt='%.5e')
         np.savetxt('../data/desactivacion1.dat', SOL[:,:,1], fmt='%.5e')
@@ -89,13 +89,13 @@ if __name__ == "__main__":
 
         rep1 = rep.plotearLong(SOL,xlong,tlong)
         rep1.componentes()
-        rep1.T_and_P()
-        rep1.T_and_Ts()
-        rep1.actividad()
-        rep1.general_plot(SOL[:,:,0], xlong, tlong, title="ciclohexanol (kmol/h)")
-        rep1.general_plot(SOL[:,:,1], xlong, tlong, title="ciclohexanona (kmol/h)")
-        rep1.general_plot(SOL[:,:,5], xlong, tlong, title="Temperatura (C)")
-        rep1.general_plot(SOL[:,:,7], xlong, tlong, title="Presion (atm)")
+        #rep1.T_and_P()
+        #rep1.T_and_Ts()
+        #rep1.actividad()
+        #rep1.general_plot(SOL[:,:,0], xlong, tlong, title="ciclohexanol (kmol/h)")
+        #rep1.general_plot(SOL[:,:,1], xlong, tlong, title="ciclohexanona (kmol/h)")
+        #rep1.general_plot(SOL[:,:,5], xlong, tlong, title="Temperatura (C)")
+        #rep1.general_plot(SOL[:,:,7], xlong, tlong, title="Presion (atm)")
         rep1.moduloThiele()
 
         # representar soluciones

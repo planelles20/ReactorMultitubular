@@ -101,22 +101,22 @@ class plotearLong(object):
         plt.show()
 
     def moduloThiele(self):
-
         mL = np.zeros((self.nt,self.nl))
         rr = kn.CuZn()
         for i in range(self.nt):
             for j in range(self.nl):
-                n = self.SOL[i,j,:5]
-                T = self.SOL[i,j,5]
-                P = self.SOL[i,j,7]
+                n = self.SOL[i,j,0:5] #kmol/h
+                T = self.SOL[i,j,5]+273.15# K
+                P = self.SOL[i,j,7] #atm
                 a = self.SOL[i,j,8]
-                L = datos.Dint/2/2
-                r =  -rr.velocidadReaccion_i(n,T,P,a)[0]/3600 #kmol/(m3s) fata multiplicar por la densidad del cata
+                L = datos.Dint/2/2 #m
+                r =  -rr.dnjdW(n,T,P,a)[0]/3600/1000 #kmol/(kgs), (tiene que ser positiva)
+                if (r<0): r = 0
                 C_ol = n[0]/((sum(n))*datos.R*T/P) #kmol/m3
-                k = r/C_ol
-                De = datos.diff*datos.e_cat**2 #m2/s
-                mL[i,j] = L*(k/De)**0.5
-                print(mL[i,j])
+                k = r*datos.ro_l/C_ol # s(-1)
+                D_OL = datos.D0_OL*np.exp(-datos.Ed_OL/((datos.R*101325)*T)) #cambiar la R a kJ/molK
+                De = D_OL*datos.e_cat**2 #m2/s
+                mL[i,j] = L*(k/De)**0.5 #adimensional
 
         fig = plt.figure(figsize=plt.figaspect(0.5))
         ax = fig.add_subplot(1, 1, 1, projection='3d')

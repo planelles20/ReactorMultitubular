@@ -12,7 +12,12 @@ ro_l = 1760. #densidad del lecho kg/m3_lecho
 ro_p = 2300. #densidad del catalizador kg/m3_cat
 dp = 3e-3 #diametro medio del Catalizdor (m)
 e = 1-ro_l/ro_p #porosidad del lecho m3huecos/m3lecho
-diff = 0.84e-5 # difusividad del ciclohexanol m2/s
+
+# datos para difusion en el catalizador
+D0_OL = 7.16e-6 # difusividad del ciclohexanol m2/s (preexponencial factor)
+D0_ONA = 7.55e-7 # difusividad del ciclohexanona m2/s (preexponencial factor)
+Ed_OL = 31.98 # energia de activacion de la difusion para el ciclohexanol (kJ/mol)
+Ed_ONA = 24.25 # energia de activacion de la difusion para el ciclohexanona (kJ/mol)
 e_cat = 0.60 # huecos libres dentro del catalizador
 
 # energy

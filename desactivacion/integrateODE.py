@@ -11,7 +11,7 @@ class ODE(mec.mecanic):
     def __init__(self, n0, T0, Ts0, P0, a, Adiabatico=False, n = 100):
         # condiciones iniciales
         self.y0 = np.hstack((n0,T0,Ts0,P0))
-        self.a = a #es un array
+        self.a = a #es un array (nx1)
         self.n = n
 
         #diemsiones de los tubos
@@ -54,6 +54,7 @@ class ODE(mec.mecanic):
 
         self.www = np.ones((n+1))*5
         self.i = 0
+        
 
 
     def funcOdeCat(self, y, x):
@@ -123,6 +124,7 @@ class ODE(mec.mecanic):
         dTdL = self.dTdL(n, T, Ts, P, a)
         dTsdL = self.dTsdL(n, T, Ts, P, a)
         dPdL = self.dPdL(n, T, P)
+        print (self.dnjdW(n, T, P, a))
         dydL = np.hstack((dnjdL,dTdL, dTsdL, dPdL))
         return dydL
 
