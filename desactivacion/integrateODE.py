@@ -27,8 +27,7 @@ class ODE(mec.mecanic):
         self.ro_p = datos.ro_p #densidad del catalizador kg/m3_cat
         self.dp = datos.dp #diametro medio del Catalizdor (m)
         self.e = datos.e #porosidad del lecho m3huecos/m3lecho
-        self.Mcat = self.ro_l*self.V_lecho()
-
+        self.Mcat = self.ro_l*self.V_lecho() #kg
         self.w = np.linspace(0, self.Mcat, n)
         # energy
         self.U = datos.U #kJ/(m2*h*K)
@@ -50,7 +49,7 @@ class ODE(mec.mecanic):
         self.R = datos.R # m3*atm/(K*kmol)
         self.ro_nu = datos.ro_nu #densidad del gas entre la viscosidad del gas Pa*s
         self.viscosidad = datos.viscosidad
-        
+
         self.Adiabatico = Adiabatico
 
         self.www = np.ones((n+1))*5
