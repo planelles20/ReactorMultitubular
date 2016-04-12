@@ -45,7 +45,7 @@ if __name__ == "__main__":
         rep0.componentes()
 
     #longitud
-    if(False):
+    if(True):
         SOL = np.zeros((nt,nl,9))
         tlong = np.linspace(0,tf,nt)
         dt = tlong[1]-tlong[0]
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
         rep1 = rep.plotearLong(SOL,xlong,tlong)
         rep1.componentes()
-        #rep1.T_and_P()
+        rep1.T_and_P()
         #rep1.T_and_Ts()
         #rep1.actividad()
         #rep1.general_plot(SOL[:,:,0], xlong, tlong, title="ciclohexanol (kmol/h)")

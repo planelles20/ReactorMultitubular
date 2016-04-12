@@ -49,12 +49,13 @@ class ODE(mec.mecanic):
         self.PM = datos.PM # kg/kmol
         self.R = datos.R # m3*atm/(K*kmol)
         self.ro_nu = datos.ro_nu #densidad del gas entre la viscosidad del gas Pa*s
-
+        self.viscosidad = datos.viscosidad
+        
         self.Adiabatico = Adiabatico
 
         self.www = np.ones((n+1))*5
         self.i = 0
-        
+
 
 
     def funcOdeCat(self, y, x):
@@ -124,7 +125,6 @@ class ODE(mec.mecanic):
         dTdL = self.dTdL(n, T, Ts, P, a)
         dTsdL = self.dTsdL(n, T, Ts, P, a)
         dPdL = self.dPdL(n, T, P)
-        print (self.dnjdW(n, T, P, a))
         dydL = np.hstack((dnjdL,dTdL, dTsdL, dPdL))
         return dydL
 

@@ -18,6 +18,7 @@ class mecanic(nrgy.energia):
         self.ro_p = datos.ro_p #densidad del catalizador kg/m3_cat
         self.e = datos.e #porosidad del lecho m3huecos/m3lecho
         self.Mcat = self.ro_l*self.V_lecho()
+        self.viscosidad = datos.viscosidad
 
     def V_lecho(self):
         return self.N*self.S(self.Dint)*self.L
@@ -42,7 +43,8 @@ class mecanic(nrgy.energia):
         return self.Qv(n, t, p)/(self.N*self.S(self.Dint))
 
     def dPdW(self, n, t, p):
-        viscosidad = (1/self.ro_nu)*self.ro(n,t,p)
+        #viscosidad = (1/self.ro_nu)*self.ro(n,t,p)
+        viscosidad = self.viscosidad
         a = 150*(1-self.e)**2*viscosidad*self.Qv(n,t,p)/3600
         b = self.ro_l*(self.S(self.Dint)*self.N)**2*self.e**3*self.dp**2
 

@@ -40,3 +40,4 @@ E = np.array([    1.39426909,     -37.291909, -507.00,  962.718,     28.9049323]
 PM = np.array([100, 98, 94, 96, 2]) # kg/kmol
 R = 8.314472/101325*1000 # m3*atm/(K*kmol)
 ro_nu = 1.e5 #densidad del gas entre la viscosidad del gas kg/(m3*Pa*s)
+viscosidad = 1e-5 #viscosidad del gas en Pa s
