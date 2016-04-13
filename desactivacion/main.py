@@ -45,7 +45,7 @@ if __name__ == "__main__":
         rep0.componentes()
 
     #longitud
-    if(True):
+    if(False):
         SOL = np.zeros((nt,nl,9))
         tlong = np.linspace(0,tf,nt)
         dt = tlong[1]-tlong[0]
@@ -100,4 +100,15 @@ if __name__ == "__main__":
 
         # representar soluciones
         #plt.plot(tlong, SOL[:,-1,:5])
-        #plt.show()
+        #plt.show
+        print("a las 0 h")
+        print(SOL[0,-1,:])
+
+        print("a las 48 h")
+        print(SOL[-1,-1,:])
+
+        print("Conversion de cyclohexanol")
+        print((SOL[0,0,0]-SOL[0,-1,0])/SOL[0,0,0])
+
+        print("fraccin molar de cyclohexanol")
+        print((SOL[0,-1,0])/sum(SOL[0,-1,0:5]))

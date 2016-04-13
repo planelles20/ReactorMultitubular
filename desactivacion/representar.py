@@ -116,7 +116,8 @@ class plotearLong(object):
                 k = r*datos.ro_l/C_ol # s(-1)
                 D_OL = datos.D0_OL*np.exp(-datos.Ed_OL/((datos.R*101325)*T)) #cambiar la R a kJ/molK
                 De = D_OL*datos.e_cat**2 #m2/s
-                mL[i,j] = L*(k/De)**0.5 #adimensional
+                X = 0.712505333333 #grado de conversion de ciclohexanol en equilibrio
+                mL[i,j] = L*(k/De/X)**0.5 #adimensional
 
         fig = plt.figure(figsize=plt.figaspect(0.5))
         ax = fig.add_subplot(1, 1, 1, projection='3d')
