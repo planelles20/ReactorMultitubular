@@ -97,7 +97,6 @@ class plotearLong(object):
         plt.xlabel("longitud (m)")
         plt.ylabel("tiempo (horas)")
         plt.title("actividad")
-
         plt.show()
 
     def moduloThiele(self):
@@ -136,4 +135,32 @@ class plotearLong(object):
         plt.xlabel("longitud (m)")
         plt.ylabel("tiempo (horas)")
         plt.title(title)
+        plt.show()
+
+    def fraccionMolar(self, n=0, title=" "):
+        fig = plt.figure(figsize=plt.figaspect(0.5))
+        X = np.zeros((self.nt,self.nl))
+        for i in range(self.nt):
+            for j in range(self.nl):
+                X[i,j] = self.SOL[i,j,n]/sum(self.SOL[i,j,0:5])
+
+        ax = fig.add_subplot(1, 1, 1, projection='3d')
+        surf = ax.plot_surface(self.X, self.Y, X,cmap=cm.coolwarm)
+        plt.xlabel("longitud (m)")
+        plt.ylabel("tiempo (horas)")
+        plt.title(title)
+        plt.show()
+
+    def conversion(self):
+        fig = plt.figure(figsize=plt.figaspect(0.5))
+        X = np.zeros((self.nt,self.nl))
+        for i in range(self.nt):
+            for j in range(self.nl):
+                X[i,j] = (self.SOL[i,0,0]-self.SOL[i,j,0])/self.SOL[i,0,0]
+
+        ax = fig.add_subplot(1, 1, 1, projection='3d')
+        surf = ax.plot_surface(self.X, self.Y, X,cmap=cm.coolwarm)
+        plt.xlabel("longitud (m)")
+        plt.ylabel("tiempo (horas)")
+        plt.title("Conversion del ciclohexanol")
         plt.show()
