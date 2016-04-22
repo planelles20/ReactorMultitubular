@@ -115,7 +115,7 @@ if __name__ == "__main__":
             X5[i] = SOL[0,i,4]/sum(SOL[0,i,0:5])
         # representar
         fig = plt.figure(1)
-        plt.title("Flaccion molar")
+        plt.title("Fraccion molar")
         plt.xlabel("longitud (m)")
         plt.ylabel("Fraccion molar")
         plt.plot(xlong, X1)
