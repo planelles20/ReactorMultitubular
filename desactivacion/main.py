@@ -20,9 +20,9 @@ if __name__ == "__main__":
 
     adi = False
 
-    nl = 100 # puntos en la lungitud L
-    nt = 8 #puntos en el tiempo
-    tf = 50 # horas
+    nl = 100*6 # puntos en la lungitud L
+    nt = 8*2*10 #puntos en el tiempo
+    tf = 50*2 # horas
 
     # que hace?
 
@@ -45,7 +45,7 @@ if __name__ == "__main__":
         rep0.componentes()
 
     #longitud
-    if(False):
+    if(True):
         SOL = np.zeros((nt,nl,9))
         tlong = np.linspace(0,tf,nt)
         dt = tlong[1]-tlong[0]
@@ -86,7 +86,7 @@ if __name__ == "__main__":
         SOL[:,:,6] = np.loadtxt('../data/desactivacion6.dat')
         SOL[:,:,7] = np.loadtxt('../data/desactivacion7.dat')
         SOL[:,:,8] = np.loadtxt('../data/desactivacion8.dat')
-        '''
+
         rep1 = rep.plotearLong(SOL,xlong,tlong)
         rep1.componentes()
         rep1.T_and_P()
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         rep1.fraccionMolar(n=0,title="ciclohexanol")
         rep1.fraccionMolar(n=1,title="ciclohexanona")
         rep1.conversion
-        '''
+
         X1 = np.zeros((nl))
         X2 = np.zeros((nl))
         X3 = np.zeros((nl))
