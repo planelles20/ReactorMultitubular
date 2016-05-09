@@ -3,13 +3,13 @@
 Diseño de un reartor multitubular de lecho fijo. Producción de ciclohexanona a
 partir de la deshidrogenación de ciclohexanol (reacción endotérmica).
 
-*Caudal de entrada*
+## Caudal de entrada
 El caudal de entrada es de 75 kmol/h de ciclohexanol y 3 kmol/h de ciclohexanona
 a 2 atm y 270 C.
 
 Además se produce fenol y ciclohexenona en pequeñas cantidades.
 
-*Características del reactor* 
+## Características del reactor
 El rector está compuesto por 3000 tubos de 2 pulgadas de diámetro interno y
 2.5 m de longitud.
 
