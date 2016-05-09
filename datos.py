@@ -3,7 +3,7 @@ import numpy as np
 # diseño del intercambiador
 Dint = 2.*2.54/100 # metros, diametro interno de los tubos
 Ntub = 3000 # nuemro de tubos
-L = 2.5*6 # metros, longitud de los tubos
+L = 2.5 # metros, longitud de los tubos
 
 
 

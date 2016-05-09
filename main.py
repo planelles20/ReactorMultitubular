@@ -21,8 +21,8 @@ if __name__ == "__main__":
     adi = False
 
     nl = 100*6 # puntos en la lungitud L
-    nt = 8*2*10 #puntos en el tiempo
-    tf = 50*2 # horas
+    nt = 8 #puntos en el tiempo
+    tf = 50 # horas
 
     # que hace?
 
@@ -61,31 +61,32 @@ if __name__ == "__main__":
 
         xlong = sol.abcisasLongReactor()
         #print (SOL[-1,-1,:])
-        np.savetxt('../data/desactivacionX.dat', xlong, fmt='%.5e')
-        np.savetxt('../data/desactivacion0.dat', SOL[:,:,0], fmt='%.5e')
-        np.savetxt('../data/desactivacion1.dat', SOL[:,:,1], fmt='%.5e')
-        np.savetxt('../data/desactivacion2.dat', SOL[:,:,2], fmt='%.5e')
-        np.savetxt('../data/desactivacion3.dat', SOL[:,:,3], fmt='%.5e')
-        np.savetxt('../data/desactivacion4.dat', SOL[:,:,4], fmt='%.5e')
-        np.savetxt('../data/desactivacion5.dat', SOL[:,:,5], fmt='%.5e')
-        np.savetxt('../data/desactivacion6.dat', SOL[:,:,6], fmt='%.15e')
-        np.savetxt('../data/desactivacion7.dat', SOL[:,:,7], fmt='%.5e')
-        np.savetxt('../data/desactivacion8.dat', SOL[:,:,8], fmt='%.5e')
+        np.savetxt('./data/desactivaciont.dat', tlong, fmt='%.5e')
+        np.savetxt('./data/desactivacionX.dat', xlong, fmt='%.5e')
+        np.savetxt('./data/desactivacion0.dat', SOL[:,:,0], fmt='%.5e')
+        np.savetxt('./data/desactivacion1.dat', SOL[:,:,1], fmt='%.5e')
+        np.savetxt('./data/desactivacion2.dat', SOL[:,:,2], fmt='%.5e')
+        np.savetxt('./data/desactivacion3.dat', SOL[:,:,3], fmt='%.5e')
+        np.savetxt('./data/desactivacion4.dat', SOL[:,:,4], fmt='%.5e')
+        np.savetxt('./data/desactivacion5.dat', SOL[:,:,5], fmt='%.5e')
+        np.savetxt('./data/desactivacion6.dat', SOL[:,:,6], fmt='%.15e')
+        np.savetxt('./data/desactivacion7.dat', SOL[:,:,7], fmt='%.5e')
+        np.savetxt('./data/desactivacion8.dat', SOL[:,:,8], fmt='%.5e')
 
     if (True):
         tlong = np.linspace(0,tf,nt)
         xlong = np.zeros((nl))
-        xlong = np.loadtxt('../data/desactivacionX.dat')
+        xlong = np.loadtxt('./data/desactivacionX.dat')
         SOL = np.zeros((nt,nl,9))
-        SOL[:,:,0] = np.loadtxt('../data/desactivacion0.dat')
-        SOL[:,:,1] = np.loadtxt('../data/desactivacion1.dat')
-        SOL[:,:,2] = np.loadtxt('../data/desactivacion2.dat')
-        SOL[:,:,3] = np.loadtxt('../data/desactivacion3.dat')
-        SOL[:,:,4] = np.loadtxt('../data/desactivacion4.dat')
-        SOL[:,:,5] = np.loadtxt('../data/desactivacion5.dat')
-        SOL[:,:,6] = np.loadtxt('../data/desactivacion6.dat')
-        SOL[:,:,7] = np.loadtxt('../data/desactivacion7.dat')
-        SOL[:,:,8] = np.loadtxt('../data/desactivacion8.dat')
+        SOL[:,:,0] = np.loadtxt('./data/desactivacion0.dat')
+        SOL[:,:,1] = np.loadtxt('./data/desactivacion1.dat')
+        SOL[:,:,2] = np.loadtxt('./data/desactivacion2.dat')
+        SOL[:,:,3] = np.loadtxt('./data/desactivacion3.dat')
+        SOL[:,:,4] = np.loadtxt('./data/desactivacion4.dat')
+        SOL[:,:,5] = np.loadtxt('./data/desactivacion5.dat')
+        SOL[:,:,6] = np.loadtxt('./data/desactivacion6.dat')
+        SOL[:,:,7] = np.loadtxt('./data/desactivacion7.dat')
+        SOL[:,:,8] = np.loadtxt('./data/desactivacion8.dat')
 
         rep1 = rep.plotearLong(SOL,xlong,tlong)
         rep1.componentes()
