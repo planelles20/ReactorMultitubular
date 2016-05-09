@@ -17,3 +17,8 @@ Se produce desactivción del catalizador debido a la acumulación de coque, por 
 la velocidad de rección disminuye con el tiempo.
 
 Se intenta mantener la temperatura a 270 C con un aceite térmico.
+
+## Ejecutar
+Ejecutar archivo main.py
+
+    python main.py
