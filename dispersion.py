@@ -3,7 +3,7 @@ import datos
 import matplotlib.pyplot as plt
 
 #datos para la dispersion
-u = 5 # velocidad del viento (m/s)
+u = 8 # velocidad del viento (m/s)
 te = 10*60 #tiempo de emision de la fuga (segundos)
 y = 0 #ordenada y (metros)
 z = 0 #ordenada z (metrosS)
@@ -19,7 +19,7 @@ d = 0.76
 nl = datos.nl
 nt = datos.nt
 X0 = 0.05
-X = 1.5
+X = 6500
 nx = 100
 x = np.linspace(X0,X,nx) #distancia del eje x en metros
 
@@ -80,7 +80,8 @@ V_e0 = None
 V_s0 = None
 
 for i in range(nx):
-    if x[i]<x_ic:
+
+    if x[i] < x_ic:
         sx = 0.13*x[i]
         sy = 0.5*a*x[i]**b
         sz = c*x[i]**d
@@ -115,12 +116,12 @@ for i in range(nx):
     mca_s  = 0
 
     for j in range(4):
-        tlv_e  += Conc_e[i,j]/TLV[j]
-        tlvc_e += Conc_e[i,j]/TLVC[j]
-        mca_e  += Conc_e[i,j]/MCA[j]
-        tlv_s  += Conc_s[i,j]/TLV[j]
-        tlvc_s += Conc_s[i,j]/TLVC[j]
-        mca_s  += Conc_s[i,j]/MCA[j]
+        tlv_e  += Conc_e[i,j]/TLV[j]*1e6
+        tlvc_e += Conc_e[i,j]/TLVC[j]*1e6
+        mca_e  += Conc_e[i,j]/MCA[j]*1e6
+        tlv_s  += Conc_s[i,j]/TLV[j]*1e6
+        tlvc_s += Conc_s[i,j]/TLVC[j]*1e6
+        mca_s  += Conc_s[i,j]/MCA[j]*1e6
 
     TLVxe[i]  = tlv_e
     TLVCxe[i] = tlvc_e
@@ -128,6 +129,8 @@ for i in range(nx):
     TLVxs[i]  = tlv_s
     TLVCxs[i] = tlvc_s
     MCAxs[i]  = mca_s
+    print(x[i], tlv_e, tlvc_e, mca_e)
+    print(x[i], tlv_s, tlvc_s, mca_s)
 
 #Representar
 fig1 = plt.figure(1)
@@ -181,7 +184,7 @@ fig5 = plt.figure(2)
 plt.title("Concentracion a la entrada")
 plt.xlabel("longitud (m)")
 plt.xlim([X0,X])
-plt.ylim([0,10])
+plt.ylim([0,5])
 plt.ylabel("Concentracion (mg/m3)")
 plt.plot(x, TLVxe)
 plt.plot(x, TLVCxe)
@@ -193,7 +196,7 @@ fig6 = plt.figure(2)
 plt.title("Concentracion a la salida")
 plt.xlabel("longitud (m)")
 plt.xlim([X0,X])
-plt.ylim([0,10])
+plt.ylim([0,5])
 plt.ylabel("Concentracion (mg/m3)")
 plt.plot(x, TLVxs)
 plt.plot(x, TLVCxs)
