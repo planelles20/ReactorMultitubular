@@ -19,15 +19,15 @@ d = 0.76
 nl = datos.nl
 nt = datos.nt
 X0 = 0.05
-X = 2
+X = 1.5
 nx = 100
 x = np.linspace(X0,X,nx) #distancia del eje x en metros
 
 # limites de inflamabilidad en % de volumen
-LIIe = 13*np.ones((nx)) #limite infereior de inflamabilidad de la mezcla a la entrada al reactor
-LIIs = 10*np.ones((nx))#limite infereior de inflamabilidad de la mezcla a la salida al reactor
-LSIe = 25*np.ones((nx))#limite superior de inflamabilidad de la mezcla a la entrada al reactor
-LSIs = 20*np.ones((nx))#limite superior de inflamabilidad de la mezcla a la salida al reactor
+LIIe = 1*np.ones((nx)) #limite infereior de inflamabilidad de la mezcla a la entrada al reactor
+LIIs = 1.5*np.ones((nx))#limite infereior de inflamabilidad de la mezcla a la salida al reactor
+LSIe = 9*np.ones((nx))#limite superior de inflamabilidad de la mezcla a la entrada al reactor
+LSIs = 13.9*np.ones((nx))#limite superior de inflamabilidad de la mezcla a la salida al reactor
 
 N = np.zeros((nt,nl,5))
 T = np.zeros((nt,nl,1))
