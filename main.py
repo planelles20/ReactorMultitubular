@@ -34,16 +34,7 @@ if __name__ == "__main__":
     # dP/dW  = j(nj, T, P)                       | dP/dW|
     # dadt   = k(nj, T, P, a)                    | da/dt|
 
-    #solucion para un longitud L y un numero de tubos N
-    #catalizador
-    if(False): #una solucion
-        sol = intODE.ODE(n0, T0, Ts0, P0, 1, Adiabatico=adi)
-        ycat = sol.solutionCat()
-        xcat = sol.abcisasMasaCat()
-
-        rep0 = rep.plotearLong(sol,xcat,tlong)
-        rep0.componentes()
-
+    
     #longitud
     if(True):
         SOL = np.zeros((nt,nl,9))
