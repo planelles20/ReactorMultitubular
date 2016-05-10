@@ -29,6 +29,12 @@ LIIs = 1.5*np.ones((nx))#limite infereior de inflamabilidad de la mezcla a la sa
 LSIe = 9*np.ones((nx))#limite superior de inflamabilidad de la mezcla a la entrada al reactor
 LSIs = 13.9*np.ones((nx))#limite superior de inflamabilidad de la mezcla a la salida al reactor
 
+#limites de exposicion
+#        [OL, ONA, FENOL, CXENONA, H2]
+TLV  = [12.20,  4.88, 1.30,  76.30, None]
+TLVC = [36.60, 12.21, 3.90, 228.91, None]
+MCA  = [61.00, 24.41, 6.49, 381.51, None]
+
 N = np.zeros((nt,nl,5))
 T = np.zeros((nt,nl,1))
 P = np.zeros((nt,nl,1))
@@ -62,6 +68,12 @@ Conc_s = np.zeros((nx,5)) #kg/m3 salida al reactor por componentes
 Conc = np.zeros((nx)) #kg/m3 salida al reactor en total
 V_e = np.zeros((nx)) # % volumen de aire de la mezcla a la entrada al reactor
 V_s =  np.zeros((nx)) # % volumen de aire de la mezcla a la salida al reactor
+TLVxe  = np.zeros((nx))
+TLVCxe = np.zeros((nx))
+MCAxe  = np.zeros((nx))
+TLVxs  = np.zeros((nx))
+TLVCxs = np.zeros((nx))
+MCAxs  = np.zeros((nx))
 
 #volumen inical que ocupan los reactivos al salir por la fuga
 V_e0 = None
@@ -94,6 +106,28 @@ for i in range(nx):
     V_e[i] = V_e[i]/V_e0*100
     V_s[i] = V_s[i]/V_s0*100
 
+    #limite de exposicion
+    tlv_e  = 0
+    tlvc_e = 0
+    mca_e  = 0
+    tlv_s  = 0
+    tlvc_s = 0
+    mca_s  = 0
+
+    for j in range(4):
+        tlv_e  += Conc_e[i,j]/TLV[j]
+        tlvc_e += Conc_e[i,j]/TLVC[j]
+        mca_e  += Conc_e[i,j]/MCA[j]
+        tlv_s  += Conc_s[i,j]/TLV[j]
+        tlvc_s += Conc_s[i,j]/TLVC[j]
+        mca_s  += Conc_s[i,j]/MCA[j]
+
+    TLVxe[i]  = tlv_e
+    TLVCxe[i] = tlvc_e
+    MCAxe[i]  = mca_e
+    TLVxs[i]  = tlv_s
+    TLVCxs[i] = tlvc_s
+    MCAxs[i]  = mca_s
 
 #Representar
 fig1 = plt.figure(1)
@@ -141,4 +175,28 @@ plt.ylabel("Porcentaje en volumen")
 plt.plot(x, V_s)
 plt.plot(x, LIIs)
 plt.plot(x, LSIs)
+plt.show()
+
+fig5 = plt.figure(2)
+plt.title("Concentracion a la entrada")
+plt.xlabel("longitud (m)")
+plt.xlim([X0,X])
+plt.ylim([0,10])
+plt.ylabel("Concentracion (mg/m3)")
+plt.plot(x, TLVxe)
+plt.plot(x, TLVCxe)
+plt.plot(x, MCAxe)
+plt.plot(x, np.ones((nx)))
+plt.show()
+
+fig6 = plt.figure(2)
+plt.title("Concentracion a la salida")
+plt.xlabel("longitud (m)")
+plt.xlim([X0,X])
+plt.ylim([0,10])
+plt.ylabel("Concentracion (mg/m3)")
+plt.plot(x, TLVxs)
+plt.plot(x, TLVCxs)
+plt.plot(x, MCAxs)
+plt.plot(x, np.ones((nx)))
 plt.show()
