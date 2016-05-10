@@ -19,6 +19,10 @@ la velocidad de rección disminuye con el tiempo.
 Se intenta mantener la temperatura a 270 C con un aceite térmico.
 
 ## Ejecutar
-Ejecutar archivo main.py
+Ejecutar archivo principal main.py
 
     python main.py
+
+Ejecutar archivo del estudio de la dispersion de los componentes
+
+    python dispersion.py

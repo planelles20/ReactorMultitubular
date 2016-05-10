@@ -18,11 +18,11 @@ if __name__ == "__main__":
     N = datos.Ntub #numero de tubos inicial
     Dint = datos.Dint # diamtero interno de los tubos (m)
 
-    adi = False
+    adi = datos.adi
 
-    nl = 100*6 # puntos en la lungitud L
-    nt = 8 #puntos en el tiempo
-    tf = 50 # horas
+    nl = datos.nl # puntos en la lungitud L
+    nt = datos.nt #puntos en el tiempo
+    tf = datos.tf # horas
 
     # que hace?
 
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     # dP/dW  = j(nj, T, P)                       | dP/dW|
     # dadt   = k(nj, T, P, a)                    | da/dt|
 
-    
+
     #longitud
     if(True):
         SOL = np.zeros((nt,nl,9))

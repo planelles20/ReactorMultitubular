@@ -5,6 +5,11 @@ Dint = 2.*2.54/100 # metros, diametro interno de los tubos
 Ntub = 3000 # nuemro de tubos
 L = 2.5 # metros, longitud de los tubos
 
+adi = False #Adiabatico
+
+nl = 100 # puntos en la lungitud L
+nt = 8 #puntos en el tiempo
+tf = 50 # horas
 
 
 # catalizador
@@ -22,7 +27,7 @@ e_cat = 0.60 # huecos libres dentro del catalizador
 
 # energy
 U = 12*5.6745/1000*3600 #kJ/(m2*h*K)
-ts = 300+275.15 #temperatura del aceite termico (K)
+ts = 270+275.15 #temperatura del aceite termico (K)
 t0 = 25+273.15 # temperatura del estado de referencia en K
 alpha = np.array([[-1, 1, 0, 0, 1],
                   [ 0,-1, 1, 0, 2],
