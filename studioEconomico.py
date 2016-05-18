@@ -6,14 +6,15 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 
 #datos
-Sreactor = np.pi*(3.64/2)**2 #seccion del reactor m2
+D = 3.64 #metros
+Sreactor = np.pi*(D/2)**2 #seccion del reactor m2
 Ntub = datos.Ntub
 Stub = np.pi*(datos.Dint/2)**2 #seccion de los tubos m2
 Cir_tub = np.pi*datos.Dint  #circunferencia de los tubos m
 
-#indices de coversio de dolares
-MS2006 = 1302.3
-MS1970 = 303.3
+#indices de Marshall y Swif
+MS2015 = 1600
+MS2001 = 1094
 
 #cambio de dolares a euros
 f = 0.876
@@ -27,9 +28,9 @@ coef2 = 1.0 #acero
 
 # precios de los componentes
 PriceONA = 1800/1000 # euros/kg
-PriceOL = 1000/1000 # euros/kg
+PriceOL = 1150/1000 # euros/kg
 PriceAceite = 2364.52 # euros/m3
-PriceCat = 350 #euros/kg
+PriceCat = 200 #euros/kg
 
 #tiempo de amortizacion
 amort = 10 #anos
@@ -41,6 +42,17 @@ horas_semana = 168
 PM_OL = datos.PM[0]   # kmol/kg
 PM_ONA = datos.PM[1]  # kmol/kg
 
+#Presion de diseno
+P = 1*(101325/1e5)*1.10 #bares de presion
+
+# Vlores de las correlaciones
+K1 = 3.5565
+K2 = 0.3776
+K3 = 0.0905
+Fp = ((P+1)*D/(2*(850-0.6*(P+1))+0.00315))/0.0063 #factor de la presion
+B1 = 1.49
+B2 = 1.52
+Fm = 2.8 #factor material
 
 #ecuacion calcula el coste en funcion de la composicion, longitud, tiempo
 # unidades: euros/ano
@@ -48,6 +60,7 @@ def costeReactor(n_OL, n_ONA, L, t):
     Vtub = Stub*Ntub*L #volumen de los tubos
     Vreac = Sreactor*L-Vtub #volumen que acua el aceite
     A = Cir_tub*Ntub*L #area intercambio de calor
+    V = Sreactor*L+1e-10
     #horas que rabaja el rector al ano, teniendo en cuenta que necesita 8 horas
     #para regenerar  el catalizador
     if t > 8:
@@ -55,7 +68,9 @@ def costeReactor(n_OL, n_ONA, L, t):
     else:
         Horas_Ano = 0
 
-    c1 = 105*coef1*(A*(m_ft**2))**0.62*(MS2006/MS1970)*f/amort #coste del reactor euros/ano
+    cp = 10**(K1+K2*np.log10(V)+K3*(np.log10(V))**2)
+    cbm = cp*(B1+B2*Fm*Fp) #modulo de Bare
+    c1 = cbm*(MS2015/MS2001)*f/amort #coste del reactor euros/ano
     c2 = n_OL*PM_OL*PriceOL*Horas_Ano #coste del ciclohexanol euros/ano
     c3 = n_ONA*PM_ONA*PriceONA*Horas_Ano #beneficios de la ciclohexanona euros/ano
     c4 = Vreac*PriceAceite/amort #coste del aceite termica euros/ano
@@ -91,7 +106,7 @@ for j in range(datos.nl):
         for n in range(11):
             Coste[i,j,n] = costeReactor(nOL, nONA, l[j], t[i])[n]
 
-            
+
 #representar
 n0 = 1 #punto inicial
 
@@ -148,9 +163,10 @@ plt.show()
 
 
 #maximo
-posicion_maximo = np.argmax(Coste)
-posicion_maximo_2d = np.unravel_index(posicion_maximo, Coste.shape)
-[ntmax, nLmax, _] = posicion_maximo_2d
+posicion_maximo = np.argmax(Coste[:,:,0])
+posicion_maximo_2d = np.unravel_index(posicion_maximo, Coste[:,:,0].shape)
+[ntmax, nLmax] = posicion_maximo_2d
+print(ntmax, nLmax)
 print("Longitud maxima (metros):        ",l[nLmax])
 print("Tiempo maximo (horas):           ",t[ntmax])
 print("Beneficio maximo (euros/ano):    ",Coste[ntmax, nLmax, 0])
