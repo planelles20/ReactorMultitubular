@@ -27,8 +27,8 @@ coef1 = 1.8 #acero inoxidable
 coef2 = 1.0 #acero
 
 # precios de los componentes
-PriceONA = 1800/1000 # euros/kg
-PriceOL = 1150/1000 # euros/kg
+PriceONA = 1750/1000 # euros/kg
+PriceOL = 1100/1000 # euros/kg
 PriceAceite = 2364.52 # euros/m3
 PriceCat = 200 #euros/kg
 
@@ -45,11 +45,15 @@ PM_ONA = datos.PM[1]  # kmol/kg
 #Presion de diseno
 P = 1*(101325/1e5)*1.10 #bares de presion
 
-# Vlores de las correlaciones
+# Valores de las correlaciones
 K1 = 3.5565
 K2 = 0.3776
 K3 = 0.0905
+
 Fp = ((P+1)*D/(2*(850-0.6*(P+1))+0.00315))/0.0063 #factor de la presion
+if Fp < 1:
+    Fp = 1
+
 B1 = 1.49
 B2 = 1.52
 Fm = 2.8 #factor material
@@ -101,7 +105,7 @@ P[:,:,0] = np.loadtxt('./data/desactivacion6.dat')
 
 for j in range(datos.nl):
     for i in range(datos.nt):
-        nOL = N[0,0,0]-N[i,j,0] #el ciclo hexanol que no reacciona se reutiliza
+        nOL = N[0,0,0]#-N[i,j,0] #el ciclo hexanol que no reacciona se reutiliza
         nONA = N[i,j,1]
         for n in range(11):
             Coste[i,j,n] = costeReactor(nOL, nONA, l[j], t[i])[n]
@@ -175,3 +179,17 @@ print("Coste ciclohexanol (euros/ano):  ",Coste[ntmax, nLmax, 7])
 print("Coste ciclohexanona (euros/ano): ",Coste[ntmax, nLmax, 8])
 print("Coste aceite (euros/ano):        ",Coste[ntmax, nLmax, 9])
 print("Coste catalizador (euros/ano):   ",Coste[ntmax, nLmax, 10])
+
+fig = plt.figure(1)
+plt.title("")
+plt.xlabel("longitud (m)")
+plt.ylabel("Coste reactor euros/ano")
+plt.plot(l[n0:], Coste[ntmax,n0:,0])
+plt.show()
+
+fig = plt.figure(1)
+plt.title("")
+plt.xlabel("tiempo (h)")
+plt.ylabel("Coste reactor euros/ano")
+plt.plot(t[n0:], Coste[n0:,nLmax,0])
+plt.show()
