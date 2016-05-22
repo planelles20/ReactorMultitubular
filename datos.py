@@ -3,14 +3,13 @@ import numpy as np
 # diseño del intercambiador
 Dint = 2.*2.54/100 # metros, diametro interno de los tubos
 Ntub = 3000 # nuemro de tubos
-L = 2.5 # metros, longitud de los tubos
+L = 3 # metros, longitud de los tubos
+tf = 56 # horas
+
+nl = 100 * 5 # puntos en la lungitud L
+nt = 8 * 10 #puntos en el tiempo
 
 adi = False #Adiabatico
-
-nl = 100 # puntos en la lungitud L
-nt = 8 #puntos en el tiempo
-tf = 50 # horas
-
 
 # catalizador
 ro_l = 1760. #densidad del lecho kg/m3_lecho

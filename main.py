@@ -35,7 +35,7 @@ if __name__ == "__main__":
     # dadt   = k(nj, T, P, a)                    | da/dt|
 
 
-    #longitud
+    #Resolver
     if(True):
         SOL = np.zeros((nt,nl,9))
         tlong = np.linspace(0,tf,nt)
@@ -51,7 +51,7 @@ if __name__ == "__main__":
             a = sol.aaa(SOL[i,:,:5], SOL[i,:,5], SOL[i,:,7], SOL[i,:,8], dt)
 
         xlong = sol.abcisasLongReactor()
-        #print (SOL[-1,-1,:])
+
         np.savetxt('./data/desactivaciont.dat', tlong, fmt='%.5e')
         np.savetxt('./data/desactivacionX.dat', xlong, fmt='%.5e')
         np.savetxt('./data/desactivacion0.dat', SOL[:,:,0], fmt='%.5e')
@@ -64,6 +64,7 @@ if __name__ == "__main__":
         np.savetxt('./data/desactivacion7.dat', SOL[:,:,7], fmt='%.5e')
         np.savetxt('./data/desactivacion8.dat', SOL[:,:,8], fmt='%.5e')
 
+    #Representar
     if (True):
         tlong = np.linspace(0,tf,nt)
         xlong = np.zeros((nl))
@@ -91,7 +92,7 @@ if __name__ == "__main__":
         rep1.moduloThiele()
         rep1.fraccionMolar(n=0,title="ciclohexanol")
         rep1.fraccionMolar(n=1,title="ciclohexanona")
-        rep1.conversion
+        rep1.conversion()
 
         X1 = np.zeros((nl))
         X2 = np.zeros((nl))
@@ -105,7 +106,30 @@ if __name__ == "__main__":
             X3[i] = SOL[0,i,2]/sum(SOL[0,i,0:5])
             X4[i] = SOL[0,i,3]/sum(SOL[0,i,0:5])
             X5[i] = SOL[0,i,4]/sum(SOL[0,i,0:5])
-        # representar
+
+        np.savetxt('./data/fraccionMolarCiclohexanonaTiempo0.dat', X2, fmt='%.5e')
+        np.savetxt('./data/TemperaturaAtiempo0.dat', SOL[0,:,5], fmt='%.5e')
+        fig = plt.figure(1)
+        plt.title("Fraccion molar")
+        plt.xlabel("longitud (m)")
+        plt.ylabel("Fraccion molar")
+        plt.plot(xlong, X1)
+        plt.plot(xlong, X2)
+        plt.plot(xlong, X3)
+        plt.plot(xlong, X4)
+        plt.plot(xlong, X5)
+        plt.show()
+
+
+        for i in range(nl):
+            X1[i] = SOL[-1,i,0]/sum(SOL[-1,i,0:5])
+            X2[i] = SOL[-1,i,1]/sum(SOL[-1,i,0:5])
+            X3[i] = SOL[-1,i,2]/sum(SOL[-1,i,0:5])
+            X4[i] = SOL[-1,i,3]/sum(SOL[-1,i,0:5])
+            X5[i] = SOL[-1,i,4]/sum(SOL[-1,i,0:5])
+
+        np.savetxt('./data/fraccionMolarCiclohexanonaTiempoFinal.dat', X2, fmt='%.5e')
+        np.savetxt('./data/TemperaturaAtiempoFinal.dat', SOL[-1,:,5], fmt='%.5e')
         fig = plt.figure(1)
         plt.title("Fraccion molar")
         plt.xlabel("longitud (m)")
