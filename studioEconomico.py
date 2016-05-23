@@ -91,7 +91,7 @@ def costeReactor(n_OL, n_ONA, q, L, t):
     #horas que rabaja el rector al ano, teniendo en cuenta que necesita 8 horas
     #para regenerar  el catalizador
     if t > 8:
-        Horas_Ano = meses_ano*4*(horas_semana/t)*(t-8)
+        Horas_Ano = meses_ano*4*(horas_semana)*((t-8)/t)
     else:
         Horas_Ano = 0
 
