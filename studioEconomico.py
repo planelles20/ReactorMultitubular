@@ -27,7 +27,7 @@ coef1 = 1.8 #acero inoxidable
 coef2 = 1.0 #acero
 
 # precios de los componentes
-PriceONA = 1700/1000 # euros/kg
+PriceONA = 1570/1000 # euros/kg
 PriceOL = 1100/1000 # euros/kg
 PriceAceite = 2364.52 # euros/m3
 PriceCat = 200 #euros/kg
@@ -148,10 +148,27 @@ for j in range(datos.nl):
     for i in range(datos.nt):
         nOL = N[0,0,0]#-N[i,j,0] #el ciclo hexanol que no reacciona se reutiliza
         nONA = N[i,j,1]
-        for n in range(13):
+        for nn in range(13):
             q = Q[i,j] #calor en el pinto i,j en kJ/h
-            Coste[i,j,n] = costeReactor(nOL, nONA, q, l[j], t[i])[n]
+            Coste[i,j,nn] = costeReactor(nOL, nONA, q, l[j], t[i])[nn]
 
+
+
+#maximo
+posicion_maximo = np.argmax(Coste[:,:,0])
+posicion_maximo_2d = np.unravel_index(posicion_maximo, Coste[:,:,0].shape)
+[ntmax, nLmax] = posicion_maximo_2d
+print(ntmax, nLmax)
+print("Longitud maxima (metros):        ",l[nLmax])
+print("Tiempo maximo (horas):           ",t[ntmax])
+print("Beneficio maximo (euros/ano):    ",Coste[ntmax, nLmax, 0])
+print("Coste reactor (euros):           ",Coste[ntmax, nLmax, 7]*amort)
+print("Coste ciclohexanol (euros/ano):  ",Coste[ntmax, nLmax, 8])
+print("Ventas ciclohexanona (euros/ano):",Coste[ntmax, nLmax, 9])
+print("Coste aceite euros:              ",Coste[ntmax, nLmax, 10]*amort)
+print("Coste catalizador euros:         ",Coste[ntmax, nLmax, 11]*amort)
+print("Coste calor (euros/ano):         ",Coste[ntmax, nLmax, 12])
+print("Calor (kJ/h):                    ",Q[ntmax,nLmax,0])
 
 #representar
 n0 = 1 #punto inicial
@@ -168,8 +185,9 @@ plt.title("Beneficios reactor euros/ano")
 plt.show()
 
 fig = plt.figure(1)
-#levels = 50
-levels = [-6e7,-5e7,-4e7,-3e7,-2e7,-1e7, -1e6, -1e5, -1e4, -1e3, -1e2, -1e1, 0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 0.3e7, 0.4e7,0.5e7, 5700000, 6000000, 6100000, 6170000, 6176000, 6176030, 6176038]
+maximo = Coste[ntmax, nLmax, 0]
+levels = [-6e7,-5e7,-4e7,-3e7,-2e7,-1e7, -1e6, -1e5, -1e4, -1e3, -1e2, -1e1, 0, maximo/10, maximo/9, maximo/8, maximo/7, maximo/6, maximo/5, maximo/4, maximo/3, maximo/2, maximo/1.5, maximo/1.15, maximo/1.10, maximo/1.08, maximo/1.05, maximo/1.03, maximo/1.01, maximo/1.001, maximo/1.0001, maximo/1.00001, maximo]
+
 plt.contour(X[n0:,n0:], Y[n0:,n0:], Coste[n0:,n0:,0], levels, cmap=cm.coolwarm)
 fig.colorbar(surf, shrink=0.5, aspect=5)
 plt.xlabel("longitud (m)")
@@ -177,81 +195,76 @@ plt.ylabel("tiempo (horas)")
 plt.title("Beneficios reactor euros/ano")
 plt.show()
 
-#Relacion de costes
-fig = plt.figure(figsize=plt.figaspect(0.5))
-ax = fig.add_subplot(1, 1, 1, projection='3d')
-surf = ax.plot_surface(X[n0:,n0:], Y[n0:,n0:], Coste[n0:,n0:,1], cmap=cm.coolwarm)
-plt.xlabel("longitud (m)")
-plt.ylabel("tiempo (horas)")
-plt.title("Relacion reactor")
-plt.show()
-
-fig = plt.figure(figsize=plt.figaspect(0.5))
-ax = fig.add_subplot(1, 1, 1, projection='3d')
-surf = ax.plot_surface(X[n0:,n0:], Y[n0:,n0:], Coste[n0:,n0:,2], cmap=cm.coolwarm)
-plt.xlabel("longitud (m)")
-plt.ylabel("tiempo (horas)")
-plt.title("Relacion ciclohaxanol")
-plt.show()
-
-fig = plt.figure(figsize=plt.figaspect(0.5))
-ax = fig.add_subplot(1, 1, 1, projection='3d')
-surf = ax.plot_surface(X[n0:,n0:], Y[n0:,n0:], Coste[n0:,n0:,3], cmap=cm.coolwarm)
-plt.xlabel("longitud (m)")
-plt.ylabel("tiempo (horas)")
-plt.title("Relacion ciclohaxanona")
-plt.show()
-
-fig = plt.figure(figsize=plt.figaspect(0.5))
-ax = fig.add_subplot(1, 1, 1, projection='3d')
-surf = ax.plot_surface(X[n0:,n0:], Y[n0:,n0:], Coste[n0:,n0:,4], cmap=cm.coolwarm)
-plt.xlabel("longitud (m)")
-plt.ylabel("tiempo (horas)")
-plt.title("Relacion aceite termico")
-plt.show()
-
-fig = plt.figure(figsize=plt.figaspect(0.5))
-ax = fig.add_subplot(1, 1, 1, projection='3d')
-surf = ax.plot_surface(X[n0:,n0:], Y[n0:,n0:], Coste[n0:,n0:,5], cmap=cm.coolwarm)
-plt.xlabel("longitud (m)")
-plt.ylabel("tiempo (horas)")
-plt.title("Relacion catalizador")
-plt.show()
-
-fig = plt.figure(figsize=plt.figaspect(0.5))
-ax = fig.add_subplot(1, 1, 1, projection='3d')
-surf = ax.plot_surface(X[n0:,n0:], Y[n0:,n0:], Coste[n0:,n0:,6], cmap=cm.coolwarm)
-plt.xlabel("longitud (m)")
-plt.ylabel("tiempo (horas)")
-plt.title("Relacion calor")
-plt.show()
-
-#maximo
-posicion_maximo = np.argmax(Coste[:,:,0])
-posicion_maximo_2d = np.unravel_index(posicion_maximo, Coste[:,:,0].shape)
-[ntmax, nLmax] = posicion_maximo_2d
-print(ntmax, nLmax)
-print("Longitud maxima (metros):        ",l[nLmax])
-print("Tiempo maximo (horas):           ",t[ntmax])
-print("Beneficio maximo (euros/ano):    ",Coste[ntmax, nLmax, 0])
-print("Coste reactor (euros):           ",Coste[ntmax, nLmax, 7]*amort)
-print("Coste ciclohexanol (euros/ano):  ",Coste[ntmax, nLmax, 8])
-print("Coste ciclohexanona (euros/ano): ",Coste[ntmax, nLmax, 9])
-print("Coste aceite euros:              ",Coste[ntmax, nLmax, 10]*amort)
-print("Coste catalizador euros:         ",Coste[ntmax, nLmax, 11]*amort)
-print("Coste calor (euros/ano):         ",Coste[ntmax, nLmax, 12])
-print("Calor (kJ/h):                    ",Q[ntmax,nLmax,0])
 
 fig = plt.figure(1)
 plt.title("")
 plt.xlabel("longitud (m)")
-plt.ylabel("Beneficios reactor euros/ano")
+plt.ylabel("Beneficios reactor €/año")
 plt.plot(l[n0:], Coste[ntmax,n0:,0])
 plt.show()
 
 fig = plt.figure(1)
 plt.title("")
 plt.xlabel("tiempo (h)")
-plt.ylabel("Beneficios reactor euros/ano")
+plt.ylabel("Beneficios reactor €/año")
 plt.plot(t[n0:], Coste[n0:,nLmax,0])
+plt.show()
+
+#estudio economico
+
+##              P-100     E-100/E-101  E-102    E-103      V-100       reactor
+CosteEquipos = [36356.60, 716199.52, 266946.82, 125220.84, 65458.73, Coste[ntmax, nLmax, 7]*amort]
+#                 P-100   E-102   E-103   reactor
+CosteOperacion = [1.00e4, 5.42e4, 1.00e4, Coste[ntmax, nLmax, 12]]
+
+#coste total planta
+CTM = 4.74*sum(CosteEquipos)
+# coste
+CGR = CTM+0.5*sum(CosteEquipos)
+
+def CostFlow(t):
+    #coste capital total
+    FCI = Coste[ntmax, nLmax, 11]*amort+Coste[ntmax, nLmax, 10]*amort+CGR
+    #Net earnings
+    NE = 0
+    if t > 0:
+        Ingresos = Coste[ntmax, nLmax, 9]
+        Gastos =  Coste[ntmax, nLmax, 8]+sum(CosteOperacion)
+        Impuestos = 0.2*(Ingresos-Gastos-0.15*FCI)
+        NE = Ingresos-Gastos-Impuestos
+    #devolucion
+    DEV = 0
+    if t == n:
+        DEV = 0.1*FCI
+
+    if t > 0:
+        FCI = 0
+    
+    CF = NE-FCI+DEV
+
+    return CF
+
+y = np.zeros((n+1))
+
+for t in range(n+1):
+    if t == 0:
+        y[t] = CostFlow(t)
+    else:
+        y[t] = CostFlow(t)+y[t-1]
+
+
+print("VAN (€): ", sum(y)*(1/(1+i)**(n-1)))
+
+fig = plt.figure(1)
+x = [0, 2, 3, 4, 5, 6, 7, 8 ,9, 10, 11, 12]
+yy = np.zeros((n+2))
+for i in range(n+2):
+    if i >= 1:
+        yy[i] = y[i-1]
+
+plt.title("Coste acumulado")
+plt.xlabel("tiempo (años)")
+plt.ylabel("Coste anualizado (€/año)")
+plt.plot(x, yy)
+plt.plot(x, np.ones((n+2)))
 plt.show()
