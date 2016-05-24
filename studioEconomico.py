@@ -239,7 +239,7 @@ def CostFlow(t):
 
     if t > 0:
         FCI = 0
-    
+
     CF = NE-FCI+DEV
 
     return CF
@@ -252,8 +252,32 @@ for t in range(n+1):
     else:
         y[t] = CostFlow(t)+y[t-1]
 
+P = np.zeros((n+2))
+for t in range(n+2):
+    CF = 0
+    if t >= 2:
+        #coste capital total
+        FCI = Coste[ntmax, nLmax, 11]*amort+Coste[ntmax, nLmax, 10]*amort+CGR
+        #Net earnings
+        NE = 0
+        if t > 0:
+            Ingresos = Coste[ntmax, nLmax, 9]
+            Gastos =  Coste[ntmax, nLmax, 8]+sum(CosteOperacion)
+            Impuestos = 0.2*(Ingresos-Gastos-0.15*FCI)
+            NE = Ingresos-Gastos-Impuestos
+        #devolucion
+        DEV = 0
+        if t == n+1:
+            DEV = 0.1*FCI
 
-print("VAN (€): ", sum(y)*(1/(1+i)**(n-1)))
+        if t > 0:
+            FCI = 0
+
+        CF = NE+DEV
+        
+    P[t] = CF/((1+0.04)**t)
+
+print("VAN (€): ", sum(P)-y[0])
 
 fig = plt.figure(1)
 x = [0, 2, 3, 4, 5, 6, 7, 8 ,9, 10, 11, 12]
