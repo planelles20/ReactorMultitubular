@@ -19,10 +19,14 @@ la velocidad de rección disminuye con el tiempo.
 Se intenta mantener la temperatura a 270 C con un aceite térmico.
 
 ## Ejecutar
-Ejecutar archivo principal main.py
+Ejecutar archivo principal main.py (simulacion del reactor)
 
     python main.py
 
 Ejecutar archivo del estudio de la dispersion de los componentes
 
     python dispersion.py
+
+Ejecutar archivo del estudio economico para encontrar la longitud y tiempo de trabajo optimos.
+
+  python studioEconomico.py
