@@ -274,10 +274,10 @@ for t in range(n+2):
             FCI = 0
 
         CF = NE+DEV
-        
+
     P[t] = CF/((1+0.04)**t)
 
-print("VAN (€): ", sum(P)-y[0])
+print("VAN (€): ", sum(P)+y[0])
 
 fig = plt.figure(1)
 x = [0, 2, 3, 4, 5, 6, 7, 8 ,9, 10, 11, 12]
